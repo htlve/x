@@ -1,41 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Custom X Viewer</title>
+  <meta name="theme-color" content="#000000" />
+  <title>X Viewer</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="custom.css" />
 </head>
 <body>
-  <h2>Twitter Control Panel</h2>
-  <label><input type="checkbox" id="hideForYou"> Hide "For you" Tab</label>
-
+  <iframe src="https://x.com" style="width:100%; height:100vh; border:none;"></iframe>
   <script>
-    const key = 'cp-settings'
-    let settings = JSON.parse(localStorage.getItem(key) || '{}')
-
-    const toggle = document.getElementById('hideForYou')
-    toggle.checked = settings.hideForYou || false
-
-    toggle.addEventListener('change', () => {
-      settings.hideForYou = toggle.checked
-      localStorage.setItem(key, JSON.stringify(settings))
-      applySettings()
-    })
-
-    function applySettings() {
-      if (!settings.hideForYou) return
-      const tryHide = () => {
-        const forYouTab = document.querySelector('a[role="tab"][href="/home"]')
-        if (forYouTab && forYouTab.innerText.includes("For you")) {
-          forYouTab.style.display = 'none'
-        } else {
-          setTimeout(tryHide, 1000)
-        }
-      }
-      tryHide()
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
     }
-
-    applySettings()
   </script>
 </body>
 </html>
