@@ -1,0 +1,14 @@
+/* For Youタブ非表示 */
+[role="tablist"] > div:first-child {
+    display: none !important;
+}
+
+/* サイドバー非表示（必要なら） */
+[aria-label="サイドバー"] {
+    display: none !important;
+}
+
+/* 全体フォントサイズ調整 */
+body {
+    font-size: 16px !important;
+}
