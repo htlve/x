@@ -1,13 +1,54 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>X PWA</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-  </head>
-  <body>
-    <script>
-      window.location.replace("https://x.com");
-    </script>
-  </body>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X Viewer</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000">
+  <link rel="icon" href="icon.png">
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="x-frame" src="https://x.com" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+
+  <script>
+    // Control Panel for Twitter (一部抜粋)
+    const script = `
+      (() => {
+        const panel = document.createElement('div');
+        panel.style.position = 'fixed';
+        panel.style.top = '0'; panel.style.left = '0';
+        panel.style.background = 'rgba(0,0,0,0.8)';
+        panel.style.color = '#fff';
+        panel.style.zIndex = '9999';
+        panel.textContent = 'Control Panel Injected';
+        document.body.appendChild(panel);
+      })();
+    `;
+
+    const iframe = document.getElementById('x-frame');
+    iframe.onload = () => {
+      try {
+        const iframeDoc = iframe.contentWindow.document;
+        const scriptEl = iframeDoc.createElement('script');
+        scriptEl.textContent = script;
+        iframeDoc.body.appendChild(scriptEl);
+      } catch (e) {
+        console.warn("Userscript could not be injected due to cross-origin policy.");
+      }
+    };
+  </script>
+</body>
 </html>
